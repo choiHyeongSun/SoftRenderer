@@ -77,40 +77,37 @@ namespace Matrix
 			std::cout << std::endl;
 
 		}
-
 	};
 
 	inline void Matrix3x3::TransPosed()
 	{
 		Matrix3x3 mat = ZeroMatrix();
 
-		mat._11 = _11;
-		mat._12 = _21;
-		mat._13 = _31;
-		mat._21 = _12;
-		mat._22 = _22;
-		mat._23 = _32;
-		mat._31 = _13;
-		mat._32 = _23;
-		mat._33 = _33;
-
-		*this = mat;
+		_11 = _11;
+		_12 = _21;
+		_13 = _31;
+		_21 = _12;
+		_22 = _22;
+		_23 = _32;
+		_31 = _13;
+		_32 = _23;
+		_33 = _33;
 	}
 
 	inline Matrix3x3 Matrix3x3::Transposed(Matrix3x3 _Mat)
-	{
-		Matrix3x3 mat = ZeroMatrix();
-		mat._11 = _Mat._11;
-		mat._12 = _Mat._21;
-		mat._13 = _Mat._31;
-		mat._21 = _Mat._12;
-		mat._22 = _Mat._22;
-		mat._23 = _Mat._32;
-		mat._31 = _Mat._13;
-		mat._32 = _Mat._23;
-		mat._33 = _Mat._33;
+	{		
+		auto Mat = _Mat;
+		Mat._11 = Mat._11;
+		Mat._12 = Mat._21;
+		Mat._13 = Mat._31;
+		Mat._21 = Mat._12;
+		Mat._22 = Mat._22;
+		Mat._23 = Mat._32;
+		Mat._31 = Mat._13;
+		Mat._32 = Mat._23;
+		Mat._33 = Mat._33;
 
-		return mat;
+		return Mat;
 	}
 
 	inline Matrix3x3 Matrix3x3::ZeroMatrix()

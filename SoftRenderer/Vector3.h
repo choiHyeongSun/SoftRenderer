@@ -18,6 +18,7 @@ namespace Vector
 
 	public:
 		inline float Dot(Vector3 v1);
+		inline Vector3 Cross(Vector3 v1);
 		inline float Distance(Vector3 v1);
 		inline void Scale(Vector3 v1);
 		inline Vector3 Normalize();
@@ -69,10 +70,20 @@ namespace Vector
 		return x * v1.x + y * v1.y + z * v1.z;
 	}
 
+	inline Vector3 Vector3::Cross(Vector3 v1)
+	{
+		Vector3 Result = zeroVector();
+		float CrossX = y * v1.z - z * v1.y;
+		float CrossY = x * v1.z - z * v1.x;
+		float CrossZ = x * v1.y - y * v1.x;
+		
+		return Vector3(CrossX, CrossY , CrossZ);
+	}
+
 	inline float Vector3::Distance(Vector3 v1)
 	{
 		Vector3 Temp = Vector3(x, y, z) - v1;
-		float Dist = sqrt(x * x + y * y + z * z);
+		float Dist = sqrt(Temp.x * Temp.x + Temp.y * Temp.y + Temp.z * Temp.z);
 		return Dist;
 	}
 
