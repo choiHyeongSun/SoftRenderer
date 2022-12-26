@@ -1,19 +1,13 @@
 #include <Windows.h>
 #include <iostream>
 
-#include "Vector2.h"
-#include "Vector3.h"
-#include "Matrix3x3.h"
+#include <Draw.h>
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-
-
+const int canvasWidth = 1280, canvasHeight = 720;
 int main()
 {
-	const int width = 1280, height = 720;
-	const int canvasWidth = width, canvasHeight = height;
-
 	WNDCLASSEX wc = {
 		sizeof(WNDCLASSEX),
 		CS_CLASSDC,
@@ -30,7 +24,7 @@ int main()
 	};
 
 	RegisterClassEx(&wc);
-	RECT wr = { 0,0,width , height };
+	RECT wr = { 0,0,canvasWidth , canvasHeight };
 	AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
 
 	HWND hwnd = CreateWindow(
@@ -51,6 +45,7 @@ int main()
 	UpdateWindow(hwnd);
 
 	MSG msg = {};
+
 	while (WM_QUIT != msg.message)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -58,15 +53,11 @@ int main()
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}		
-	
 	}
 
 	UnregisterClass(wc.lpszClassName, wc.hInstance);
 	return 0;
 }
-
-
-
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -74,6 +65,11 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 		case WM_DESTROY:
 			::PostQuitMessage(0);
+			return 0;
+		case WM_PAINT:
+			Drawing::Draw::SetPainter(hWnd);
+			Drawing::Draw::DrawCoordinate(canvasWidth, canvasHeight, 30);
+			Drawing::Draw::EndPainter(hWnd);
 			return 0;
 	}
 	return ::DefWindowProc(hWnd, msg, wParam, lParam);

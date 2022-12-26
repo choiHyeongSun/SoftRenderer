@@ -1,7 +1,9 @@
 #pragma once
 #include <cmath>
+
 namespace Vector
 {
+
 	class Vector2
 	{
 	public:

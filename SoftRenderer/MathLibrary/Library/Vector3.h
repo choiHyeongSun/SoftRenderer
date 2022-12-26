@@ -2,6 +2,7 @@
 #include <cmath>
 namespace Vector
 {
+	
 	class Vector3
 	{
 	public:

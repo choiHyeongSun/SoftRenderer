@@ -10,7 +10,7 @@ namespace Matrix
 
 	class Matrix3x3
 	{
-	private:
+	private:		
 		Matrix3x3(float _11, float _12, float _13, float _21, float _22, float _23, float _31, float _32, float _33)
 		{
 			this->_11 = _11;

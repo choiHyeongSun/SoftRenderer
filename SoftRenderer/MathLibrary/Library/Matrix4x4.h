@@ -1,6 +1,5 @@
 #pragma once
 #include "Vector4.h"
-#include <iostream>
 
 namespace Matrix
 {
