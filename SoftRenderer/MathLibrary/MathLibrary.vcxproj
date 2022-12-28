@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Library\Matrix2x2.h" />
     <ClInclude Include="Library\Matrix3x3.h" />
     <ClInclude Include="Library\Matrix4x4.h" />
     <ClInclude Include="Library\Vector2.h" />

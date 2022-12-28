@@ -51,7 +51,7 @@ namespace Vector
 						   (1.0f - t) * v1.y + t * v2.y,
 						   (1.0f - t) * v1.z + t * v2.z);
 		}
-		static Vector3 zeroVector()
+		static Vector3 ZeroVector()
 		{
 			return Vector3(0, 0, 0);
 		}
@@ -73,7 +73,7 @@ namespace Vector
 
 	inline Vector3 Vector3::Cross(Vector3 v1)
 	{
-		Vector3 Result = zeroVector();
+		Vector3 Result = ZeroVector();
 		float CrossX = y * v1.z - z * v1.y;
 		float CrossY = x * v1.z - z * v1.x;
 		float CrossZ = x * v1.y - y * v1.x;

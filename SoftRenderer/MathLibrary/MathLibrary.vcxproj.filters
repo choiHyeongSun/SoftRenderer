@@ -33,6 +33,9 @@
     <ClInclude Include="SMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Library\Matrix2x2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SMath.cpp">

@@ -54,6 +54,10 @@ namespace Vector
 
 			return Vector2((1.0f - t) * v1.x + v2.x * t, (1.0f - t) * v1.y + v2.y * t);
 		}
+		static Vector2 ZeroVector()
+		{
+			return Vector2(0, 0);
+		}
 
 	public:
 		inline Vector2 operator+(Vector2 v);

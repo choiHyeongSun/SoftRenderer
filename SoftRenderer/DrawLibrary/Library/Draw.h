@@ -32,7 +32,7 @@ namespace Drawing
 		static void SetPainter(HWND hWnd);
 		static void EndPainter(HWND hWnd);
 
-		static constexpr HDC GetHDC();
+		static HDC GetHDC();
 
 
 		static void DrawPixel(float x, float y, COLORREF rgb = 0x00FFFFFF);
