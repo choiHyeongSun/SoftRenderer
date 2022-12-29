@@ -1,9 +1,12 @@
 #include <Windows.h>
 #include <iostream>
-
+#include <Matrix2x2.h>
+#include <Vector2.h>
 #include <Draw.h>
 
-LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+//LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
 
 const int canvasWidth = 1280, canvasHeight = 720;
 int main()
@@ -52,7 +55,7 @@ int main()
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
-		}		
+		}
 	}
 
 	UnregisterClass(wc.lpszClassName, wc.hInstance);
@@ -63,14 +66,20 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-		case WM_DESTROY:
-			::PostQuitMessage(0);
-			return 0;
-		case WM_PAINT:
-			Drawing::Draw::SetPainter(hWnd);
-			Drawing::Draw::DrawCoordinate(canvasWidth, canvasHeight, 30);
-			Drawing::Draw::EndPainter(hWnd);
-			return 0;
+	case WM_DESTROY:
+		::PostQuitMessage(0);
+		return 0;
+	case WM_PAINT:
+
+		Drawing::Draw::SetPainter(hWnd);
+		Drawing::Draw::DrawCoordinate(canvasWidth, canvasHeight, 30);
+		Drawing::Draw::EndPainter(hWnd);
+
+		return 0;
+
+	case WM_CHAR:
+		InvalidateRect(hWnd, nullptr, true);	
+		return 0;
 	}
 	return ::DefWindowProc(hWnd, msg, wParam, lParam);
 }

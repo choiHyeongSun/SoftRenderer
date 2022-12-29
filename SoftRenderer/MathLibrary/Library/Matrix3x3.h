@@ -10,7 +10,8 @@ namespace Matrix
 
 	class Matrix3x3
 	{
-	private:		
+	private:
+
 		Matrix3x3(float _11, float _12, float _13, float _21, float _22, float _23, float _31, float _32, float _33)
 		{
 			this->_11 = _11;
@@ -28,6 +29,7 @@ namespace Matrix
 		float _31;	float _32;	float _33;
 
 	public:
+
 		Matrix3x3(Vector3 v1, Vector3 v2, Vector3 v3)
 		{
 			_11 = v1.x;
@@ -45,25 +47,26 @@ namespace Matrix
 		}
 
 	public:
-		inline void TransPosed();
+
+		inline const void TransPosed();
 
 	public:
 
-		static Matrix3x3 IdentityMatrix()
+		static const Matrix3x3 IdentityMatrix()
 		{
 			return (Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1));
 		}
-		static Matrix3x3 Transposed(Matrix3x3 _Mat);
-		static Matrix3x3 ZeroMatrix();
+		static const Matrix3x3 Transposed(const Matrix3x3 & _Mat);
+		static const Matrix3x3 ZeroMatrix();
 
 	public:
 
-		inline Matrix3x3 operator+ (Matrix3x3 mat1);
-		inline Matrix3x3 operator- (Matrix3x3 mat1);
-		inline Matrix3x3 operator= (Matrix3x3 mat1);
-		inline Matrix3x3 operator* (Matrix3x3 mat1);
-		inline Matrix3x3 operator* (float s);
-		inline Vector3 operator* (Vector3 v);
+		inline Matrix3x3 operator+ (const Matrix3x3 & mat1) const;
+		inline Matrix3x3 operator- (const Matrix3x3 & mat1) const;
+		inline Matrix3x3 operator* (const Matrix3x3 & mat1) const;
+		inline Matrix3x3 operator* (const float & s) const;
+		inline Vector3 operator* (const Vector3 & v) const;
+		inline void operator= (const Matrix3x3 & mat1);
 
 
 		void ShowMatrix()
@@ -77,49 +80,48 @@ namespace Matrix
 		}
 	};
 
-	inline void Matrix3x3::TransPosed()
+	inline const void Matrix3x3::TransPosed()
 	{
-		Matrix3x3 mat = *this;
+		const Matrix3x3 mat = *this;
 
 		_11 = mat._11;	_12 = mat._21;	_13 = mat._31;
 		_21 = mat._12;	_22 = mat._22;	_23 = mat._32;
 		_31 = mat._13;	_32 = mat._23;	_33 = mat._33;
 	}
 
-	inline Matrix3x3 Matrix3x3::Transposed(Matrix3x3 _Mat)
-	{		
-		auto Mat = ZeroMatrix();
+	inline const Matrix3x3 Matrix3x3::Transposed(const Matrix3x3 & _Mat)
+	{
 
-		Mat._11 = _Mat._11; 	Mat._12 = _Mat._21;		Mat._13 = _Mat._31;
-		Mat._21 = _Mat._12;		Mat._22 = _Mat._22;		Mat._23 = _Mat._32;
-		Mat._31 = _Mat._13;		Mat._32 = _Mat._23;		Mat._33 = _Mat._33;
 
-		return Mat;
+		float _T11 = _Mat._11; 	float _T12 = _Mat._21;	float _T13 = _Mat._31;
+		float _T21 = _Mat._12;	float _T22 = _Mat._22;	float _T23 = _Mat._32;
+		float _T31 = _Mat._13;	float _T32 = _Mat._23;	float _T33 = _Mat._33;
+
+		return Matrix3x3(_T11, _T12, _T13, _T21, _T22, _T23, _T31, _T32, _T33);
+
 	}
 
-	inline Matrix3x3 Matrix3x3::ZeroMatrix()
+	inline const Matrix3x3 Matrix3x3::ZeroMatrix()
 	{
 		return Matrix3x3(0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
-	inline Matrix3x3 Matrix3x3::operator+(Matrix3x3 mat1)
+	inline Matrix3x3 Matrix3x3::operator+(const Matrix3x3 & mat1) const
 	{
-		Matrix3x3 Mat = ZeroMatrix();
+		float _T11 = _11 + mat1._11;
+		float _T12 = _12 + mat1._12;
+		float _T13 = _13 + mat1._13;
+		float _T21 = _21 + mat1._21;
+		float _T22 = _22 + mat1._22;
+		float _T23 = _23 + mat1._23;
+		float _T31 = _31 + mat1._31;
+		float _T32 = _32 + mat1._32;
+		float _T33 = _33 + mat1._33;
 
-		Mat._11 = _11 + mat1._11;
-		Mat._12 = _12 + mat1._12;
-		Mat._13 = _13 + mat1._13;
-		Mat._21 = _21 + mat1._21;
-		Mat._22 = _22 + mat1._22;
-		Mat._23 = _23 + mat1._23;
-		Mat._31 = _31 + mat1._31;
-		Mat._32 = _32 + mat1._32;
-		Mat._33 = _33 + mat1._33;
-
-		return Mat;
+		return Matrix3x3(_T11, _T12, _T13, _T21, _T22, _T23, _T31, _T32, _T33);
 	}
 
-	inline Matrix3x3 Matrix3x3::operator=(Matrix3x3 mat1)
+	inline void Matrix3x3::operator=(const Matrix3x3 & mat1)
 	{
 		_11 = mat1._11;
 		_12 = mat1._12;
@@ -130,11 +132,9 @@ namespace Matrix
 		_31 = mat1._31;
 		_32 = mat1._32;
 		_33 = mat1._33;
-
-		return Matrix3x3(_11, _12, _13, _21, _22, _23, _31, _32, _33);
 	}
 
-	inline Matrix3x3 Matrix3x3::operator*(Matrix3x3 mat1)
+	inline Matrix3x3 Matrix3x3::operator*(const Matrix3x3 & mat1) const
 	{
 		float e1 = _11 * mat1._11 + _12 * mat1._21 + _13 * mat1._31;
 		float e2 = _11 * mat1._12 + _12 * mat1._22 + _13 * mat1._32;
@@ -152,51 +152,49 @@ namespace Matrix
 		return Matrix3x3(e1, e2, e3, e4, e5, e6, e7, e8, e9);
 	}
 
-	inline Matrix3x3 Matrix3x3::operator-(Matrix3x3 mat1)
+	inline Matrix3x3 Matrix3x3::operator-(const Matrix3x3 & mat1) const
 	{
 
-		Matrix3x3 Mat = ZeroMatrix();
+		float _T11 = _11 - mat1._11;
+		float _T12 = _12 - mat1._12;
+		float _T13 = _13 - mat1._13;
+		float _T21 = _21 - mat1._21;
+		float _T22 = _22 - mat1._22;
+		float _T23 = _23 - mat1._23;
+		float _T31 = _31 - mat1._31;
+		float _T32 = _32 - mat1._32;
+		float _T33 = _33 - mat1._33;
 
-		Mat._11 = _11 - mat1._11;
-		Mat._12 = _12 - mat1._12;
-		Mat._13 = _13 - mat1._13;
-		Mat._21 = _21 - mat1._21;
-		Mat._22 = _22 - mat1._22;
-		Mat._23 = _23 - mat1._23;
-		Mat._31 = _31 - mat1._31;
-		Mat._32 = _32 - mat1._32;
-		Mat._33 = _33 - mat1._33;
-
-		return Mat;
-	}
-
-	inline Matrix3x3 Matrix3x3::operator*(float s)
-	{
-		Matrix3x3 Mat = ZeroMatrix();
-
-		Mat._11 = _11 * s;
-		Mat._12 = _12 * s;
-		Mat._13 = _13 * s;
-		Mat._21 = _21 * s;
-		Mat._22 = _22 * s;
-		Mat._23 = _23 * s;
-		Mat._31 = _31 * s;
-		Mat._32 = _32 * s;
-		Mat._33 = _33 * s;
-
-		return Mat;
+		return Matrix3x3(_T11, _T12, _T13, _T21, _T22, _T23, _T31, _T32, _T33);
 
 	}
 
-	inline Vector3 Matrix3x3::operator*(Vector3 v)
+	inline Matrix3x3 Matrix3x3::operator*(const float & s) const
 	{
-		Vector3 Result = Vector3::ZeroVector();
-		Result.x = v.x * _11 + v.y * _12 + v.z * _13;
-		Result.y = v.x * _21 + v.y * _22 + v.z * _23;
-		Result.z = v.x * _31 + v.y * _32 + v.z * _33;
 
-		return Result;
+
+		float _T11 = _11 * s;
+		float _T12 = _12 * s;
+		float _T13 = _13 * s;
+		float _T21 = _21 * s;
+		float _T22 = _22 * s;
+		float _T23 = _23 * s;
+		float _T31 = _31 * s;
+		float _T32 = _32 * s;
+		float _T33 = _33 * s;
+
+		return Matrix3x3(_T11, _T12, _T13, _T21, _T22, _T23, _T31, _T32, _T33);
+
 	}
-	
+
+	inline Vector3 Matrix3x3::operator*(const Vector3 & v) const
+	{
+		float ResultX = v.x * _11 + v.y * _12 + v.z * _13;
+		float ResultY = v.x * _21 + v.y * _22 + v.z * _23;
+		float ResultZ = v.x * _31 + v.y * _32 + v.z * _33;
+
+		return Vector3(ResultX, ResultY, ResultZ);
+	}
+
 
 }
