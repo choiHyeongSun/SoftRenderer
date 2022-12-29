@@ -17,33 +17,35 @@ namespace Drawing
 	class Draw
 	{
 
+	private:				
+		Draw() = delete;
 
-
-	private:
-		static HDC DrawHDC;
-		static PAINTSTRUCT DrawPainter;
 		static int Width;
 		static int Height;
+		static HWND hWnd;
+		static HDC hdc;
+		static HDC memDC;
+		static HBITMAP hBit;
+
+		
 
 	public:
-		static void DrawCoordinate(int Width, int Height , float Spacing);
-		static void SetHDC(HWND hWnd);
-		static void ReleaseHDC(HWND hWnd);
-		static void SetPainter(HWND hWnd);
-		static void EndPainter(HWND hWnd);
+		static void Initlization(const HWND hWnd, const int Width, const int Height);
+		static void DrawCoordinate(const float Spacing);		
+		static const void Release();
+					
+		static const void DrawPixel(const float x, const float y, const COLORREF rgb = 0x00000000);
+		static const void DrawPixel(const Vector::Vector2 v, const COLORREF rgb = 0x00000000);
+		static const void DrawPixel(const Vector::Vector3 v, const COLORREF rgb = 0x00000000);
+		static const void DrawPixel(const Vector::Vector4 v , const COLORREF rgb = 0x00000000);
 
-		static HDC GetHDC();
+		static const void DrawLine(const float fromX , const float fromY , const float toX , const float toY, const COLORREF rgb = 0x00000000);
+		static const void DrawLine(const Vector::Vector2 from, const Vector::Vector2 to, const COLORREF rgb = 0x00000000);
+		static const void DrawLine(const Vector::Vector3 from, const Vector::Vector3 to, const COLORREF rgb = 0x00000000);
+		static const void DrawLine(const Vector::Vector4 from, const Vector::Vector4 to, const COLORREF rgb = 0x00000000);
 
-
-		static void DrawPixel(float x, float y, COLORREF rgb = 0x00FFFFFF);
-		static void DrawPixel(Vector::Vector2 v , COLORREF rgb = 0x00FFFFFF);
-		static void DrawPixel(Vector::Vector3 v , COLORREF rgb = 0x00FFFFFF);
-		static void DrawPixel(Vector::Vector4 v , COLORREF rgb = 0x00FFFFFF);
-
-		static void DrawLine(float fromX , float fromY , float toX , float toY, COLORREF rgb = 0x00FFFFFF);
-		static void DrawLine(Vector::Vector2 from, Vector::Vector2 to, COLORREF rgb = 0x00FFFFFF);
-		static void DrawLine(Vector::Vector3 from, Vector::Vector3 to, COLORREF rgb = 0x00FFFFFF);
-		static void DrawLine(Vector::Vector4 from, Vector::Vector4 to, COLORREF rgb = 0x00FFFFFF);
+		static void DoubleBuffering();
+		static const void DrawingEnd();		
 		
 	};
 

@@ -7,59 +7,41 @@
 namespace Drawing
 {
 
-	HDC Draw::DrawHDC;
-	PAINTSTRUCT Draw::DrawPainter;
+
 	int Draw::Width;
 	int Draw::Height;
-
-	void Draw::SetHDC(HWND hWnd)
+	HWND Draw::hWnd;
+	HDC Draw::hdc;
+	HDC Draw::memDC;
+	HBITMAP Draw::hBit;
+	void Draw::Initlization(const HWND hWnd, const int Width, const int Height)
 	{
-		DrawHDC = GetDC(hWnd);
-	}
-
-	void Draw::ReleaseHDC(HWND hWnd)
-	{
-		ReleaseDC(hWnd, DrawHDC);
-	}
-
-	void Draw::SetPainter(HWND hWnd)
-	{
-		DrawHDC = BeginPaint(hWnd, &DrawPainter) ;
-	}
-
-	void Draw::EndPainter(HWND hWnd)
-	{
-		EndPaint(hWnd, &DrawPainter);
-	}
-
-	HDC Draw::GetHDC()
-	{
-		return DrawHDC;
-	}
-
-	void Draw::DrawCoordinate(int Width, int Height, float Spacing)
-	{
-		static int data = 0;
-		data+=30;
-		
 		Draw::Width = Width;
 		Draw::Height = Height;
+		Draw::hWnd = hWnd;		
+		hdc = GetDC(hWnd);
+	}
+
+	const void Draw::Release()
+	{
+		ReleaseDC(hWnd, hdc);
+		DeleteDC(memDC);
+		DeleteObject(hBit);
+	}
 
 
-		auto v = Vector::Vector2(data, 0.0f);
-		auto v1 = Vector::Vector2(0.0f , data);
+	void Draw::DrawCoordinate(float Spacing)
+	{
+		Rectangle(memDC, -1, -1, Width + 1, Height + 1);
 
-		Matrix::Matrix2x2 RotateMat(v, v1);
-		auto Scale = RotateMat * Vector::Vector2(1, 1);
-
-		for (float i = 0; i < Width; i += Scale.x)
+		for (float i = 0; i < Width; i += Spacing)
 		{
 			auto Start = Vector::Vector2(i, 0.0f);
 			auto End = Vector::Vector2(i, Height);
 			DrawLine(Start, End);
 		}
 
-		for (float i = 0; i < Height; i += Scale.y)
+		for (float i = 0; i < Height; i += Spacing)
 		{
 			auto Start = Vector::Vector2(0.0f, i);
 			auto End = Vector::Vector2(Width, i);
@@ -69,48 +51,68 @@ namespace Drawing
 	}
 
 
+	
 
-	void Draw::DrawPixel(float x, float y, COLORREF rgb)
+	
+
+	void const Draw::DrawPixel(const float x, const float y, const COLORREF rgb)
 	{
-		SetPixel(DrawHDC, std::round(x), std::round(y), rgb);
+		SetPixel(memDC, std::round(x), std::round(y), rgb);
 	}
-	void Draw::DrawPixel(Vector::Vector2 v, COLORREF rgb)
-	{
-		DrawPixel(v.x, v.y, rgb);
-	}
-	void Draw::DrawPixel(Vector::Vector3 v, COLORREF rgb)
-	{
-		DrawPixel(v.x, v.y, rgb);
-	}
-	void Draw::DrawPixel(Vector::Vector4 v, COLORREF rgb)
+	void const Draw::DrawPixel(const Vector::Vector2 v, const COLORREF rgb)
 	{
 		DrawPixel(v.x, v.y, rgb);
 	}
-
-
-
-
-	void Draw::DrawLine(float fromX, float fromY, float toX, float toY, COLORREF rgb)
+	void const Draw::DrawPixel(const Vector::Vector3 v, const COLORREF rgb)
 	{
-		SetDCBrushColor(DrawHDC, rgb);
-		MoveToEx(DrawHDC, std::round(fromX), std::round(fromY), nullptr);
-		LineTo(DrawHDC, std::round(toX), std::round(toY));
+		DrawPixel(v.x, v.y, rgb);
+	}
+	void const Draw::DrawPixel(const Vector::Vector4 v, const COLORREF rgb)
+	{
+		DrawPixel(v.x, v.y, rgb);
 	}
 
-	void Draw::DrawLine(Vector::Vector2 from, Vector::Vector2 to, COLORREF rgb)
+
+
+
+	void const Draw::DrawLine(const float fromX, const float fromY, const float toX, const float toY, const COLORREF rgb)
+	{		
+		MoveToEx(memDC, std::round(fromX), std::round(fromY), nullptr);
+		LineTo(memDC, std::round(toX), std::round(toY));
+	}
+
+	void const Draw::DrawLine(const Vector::Vector2 from, const Vector::Vector2 to, const COLORREF rgb)
 	{
 		DrawLine(from.x, from.y, to.x, to.y, rgb);
 	}
 
-	void Draw::DrawLine(Vector::Vector3 from, Vector::Vector3 to, COLORREF rgb)
+	void const Draw::DrawLine(const Vector::Vector3 from, const Vector::Vector3 to, const COLORREF rgb)
 	{
 		DrawLine(from.x, from.y, to.x, to.y, rgb);
 	}
 
-	void Draw::DrawLine(Vector::Vector4 from, Vector::Vector4 to, COLORREF rgb)
+	void const Draw::DrawLine(const Vector::Vector4 from, const Vector::Vector4 to, const COLORREF rgb)
 	{
 		DrawLine(from.x, from.y, to.x, to.y, rgb);
 	}
+
+	void Draw::DoubleBuffering()
+	{
+		//이중 버퍼 
+		hBit = CreateCompatibleBitmap(hdc, Width, Height);
+		memDC = CreateCompatibleDC(hdc);
+
+		HBITMAP OldBit = (HBITMAP)SelectObject(memDC, hBit);
+		DeleteObject(OldBit);
+	}
+
+	void const Draw::DrawingEnd()
+	{
+		BitBlt(hdc, 0, 0, Width, Height, memDC, 0, 0 , SRCCOPY);
+	}
+
+
+	
 
 
 
