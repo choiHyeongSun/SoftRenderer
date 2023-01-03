@@ -20,7 +20,7 @@ public:
 
 	static const double GetDeltaTime()
 	{
-		return AccTime;
+		return DeltaTime;
 	}
 	
 };

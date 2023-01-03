@@ -68,7 +68,44 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		{	
 			TimeManager::Update(hwnd);			
 			Drawing::Draw::DrawCoordinate(30);
-			Drawing::Draw::DrawingEnd();
+
+			static float X = 0;
+			static float Y = 0;
+
+			
+			if (GetAsyncKeyState(VK_LEFT) & 0x8000)
+			{
+				X--;
+			}
+			if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+			{
+				X++;
+			}
+
+			if (GetAsyncKeyState(VK_UP) & 0x8000)
+			{
+				Y--;
+			}
+			if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+			{
+				Y++;
+			}
+
+
+			for (int i = -50; i < 50; i++)
+			{
+				for (int ii = -50; ii < 50; ii++)
+				{
+					if ((i * i) + (ii * ii) < pow(50,2))
+					{
+						Drawing::Draw::DrawPixel(i + 100 + X,ii + 100 + Y);
+					}
+				}
+			}
+
+			Drawing::Draw::DrawingEnd();			
+
+			
 		}
 	}
 
@@ -82,6 +119,7 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_DESTROY:
 		::PostQuitMessage(0);
+	
 		return 0;
 
 	}
