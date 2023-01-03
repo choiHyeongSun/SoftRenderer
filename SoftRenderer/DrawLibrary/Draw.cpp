@@ -33,21 +33,20 @@ namespace Drawing
 	void Draw::DrawCoordinate(float Spacing)
 	{
 		Rectangle(memDC, -1, -1, Width + 1, Height + 1);
-
-		for (float i = 0; i < Width; i += Spacing)
+		
+		for (float i = -Width * 0.5f; i < Width * 0.5f; i += Spacing)
 		{
-			auto Start = Vector::Vector2(i, 0.0f);
+			auto Start = Vector::Vector2(i, -Height * 0.5f);
 			auto End = Vector::Vector2(i, Height);
 			DrawLine(Start, End);
 		}
-
-		for (float i = 0; i < Height; i += Spacing)
+		
+		for (float i = -Height * 0.5f; i < Height * 0.5f; i += Spacing)
 		{
-			auto Start = Vector::Vector2(0.0f, i);
-			auto End = Vector::Vector2(Width, i);
+			auto Start = Vector::Vector2(-Width * 0.5f, i);
+			auto End = Vector::Vector2(Width * 0.5f, i);
 			DrawLine(Start, End);
 		}
-
 	}
 
 
@@ -77,8 +76,9 @@ namespace Drawing
 
 	void const Draw::DrawLine(const float fromX, const float fromY, const float toX, const float toY, const COLORREF rgb)
 	{		
-		MoveToEx(memDC, std::round(fromX), std::round(fromY), nullptr);
-		LineTo(memDC, std::round(toX), std::round(toY));
+		
+		MoveToEx(memDC, std::round(fromX) + Width * 0.5f, std::round(fromY) + Height * 0.5f, nullptr);
+		LineTo(memDC, std::round(toX) + Width * 0.5f, std::round(toY) + Height * 0.5f);
 	}
 
 	void const Draw::DrawLine(const Vector::Vector2 from, const Vector::Vector2 to, const COLORREF rgb)
