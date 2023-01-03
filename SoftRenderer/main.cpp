@@ -1,7 +1,9 @@
 #include <Windows.h>
 #include <iostream>
 #include <Draw.h>
+
 #include "SoftRenderer/TimeManager.h"
+#include "SoftRenderer/InputManager.h"
 
 //LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -55,8 +57,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	MSG msg = {};
 	TimeManager::Initialization();
 	Drawing::Draw::Initlization(hwnd, canvasWidth, canvasHeight);
-
 	Drawing::Draw::DoubleBuffering();
+
 	while (WM_QUIT != msg.message)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -68,41 +70,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		{	
 			TimeManager::Update(hwnd);			
 			Drawing::Draw::DrawCoordinate(30);
-
-			static float X = 0;
-			static float Y = 0;
-
-			
-			if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-			{
-				X--;
-			}
-			if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-			{
-				X++;
-			}
-
-			if (GetAsyncKeyState(VK_UP) & 0x8000)
-			{
-				Y--;
-			}
-			if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-			{
-				Y++;
-			}
-
-
-			for (int i = -50; i < 50; i++)
-			{
-				for (int ii = -50; ii < 50; ii++)
-				{
-					if ((i * i) + (ii * ii) < pow(50,2))
-					{
-						Drawing::Draw::DrawPixel(i + 100 + X,ii + 100 + Y);
-					}
-				}
-			}
-
 			Drawing::Draw::DrawingEnd();			
 
 			
